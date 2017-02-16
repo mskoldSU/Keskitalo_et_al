@@ -1,0 +1,80 @@
+model {
+  ## Setup regression functions
+  # First core
+  x11 <- X1 %*% b11
+  x21 <- X1 %*% b21
+  for (i in 1:37){
+    p.IC[i] <- exp(x11[i]) / (exp(x11[i]) + exp(x21[i]) + 1)
+    p.TS[i] <- exp(x21[i]) / (exp(x11[i]) + exp(x21[i]) + 1)
+    p.M[i] <- 1 / (exp(x11[i]) + exp(x21[i]) + 1)
+    mu.13[i] <- mIC.13[1] * p.IC[i] + mTS.13[1] * p.TS[i] + mM.13[1] * p.M[i]
+    mu.14[i] <- mIC.14[1] * p.IC[i] + mTS.14[1] * p.TS[i] + mM.14[1] * p.M[i]    
+  }
+  # Second core
+  x12 <- X2 %*% b12
+  x22 <- X2 %*% b22
+  for (i in 1:24){
+    p.IC[i + 37] <- exp(x12[i]) / (exp(x12[i]) + exp(x22[i]) + 1)
+    p.TS[i + 37] <- exp(x22[i]) / (exp(x12[i]) + exp(x22[i]) + 1)
+    p.M[i + 37] <- 1 / (exp(x12[i]) + exp(x22[i]) + 1)
+    mu.13[i + 37] <- mIC.13[2] * p.IC[i + 37] + mTS.13[2] * p.TS[i + 37] + mM.13[2] * p.M[i + 37]
+    mu.14[i + 37] <- mIC.14[2] * p.IC[i + 37] + mTS.14[2] * p.TS[i + 37] + mM.14[2] * p.M[i + 37]
+  }
+  # Third core
+  x13 <- X3 %*% b13
+  x23 <- X3 %*% b23
+  for (i in 1:17){
+    p.IC[i + 61] <- exp(x13[i]) / (exp(x13[i]) + exp(x23[i]) + 1)
+    p.TS[i + 61]<- exp(x23[i]) / (exp(x13[i]) + exp(x23[i]) + 1)
+    p.M[i + 61] <- 1 / (exp(x13[i]) + exp(x23[i]) + 1)
+    mu.13[i + 61] <- mIC.13[3] * p.IC[i + 61] + mTS.13[3] * p.TS[i + 61] + mM.13[3] * p.M[i + 61]
+    mu.14[i + 61] <- mIC.14[3] * p.IC[i + 61] + mTS.14[3] * p.TS[i + 61] + mM.14[3] * p.M[i + 61]    
+  }
+  ## Likelihood part
+  for (i in 1:78) { 
+    y.13[i] ~ dnorm(mu.13[i],tau.13)
+    y.14[i] ~ dnorm(mu.14[i],tau.14)
+  }
+  ## End-member distributions
+  mIC.13[1] ~ dnorm(-26.3, 2.5)
+  mIC.13[2] ~ dnorm(-26.3, 2.5)
+  mIC.13[3] ~ dnorm(-26.3, 2.5)
+  mIC.14[1] <- IC14[1] - 1000
+  mIC.14[2] <- IC14[2] - 1000
+  mIC.14[3] <- IC14[3] - 1000
+  IC14[1] ~ dexp(0.015)
+  IC14[2] ~ dexp(0.006)
+  IC14[3] ~ dexp(0.005)
+  mTS.13[1] ~ dnorm(-28.2, 0.26)
+  mTS.13[2] ~ dnorm(-28.2, 0.26)
+  mTS.13[3] ~ dnorm(-28.2, 0.26)
+  mTS.14[1] ~ dnorm(-126, 0.00034)
+  mTS.14[2] ~ dnorm(-126, 0.00034)
+  mTS.14[3] ~ dnorm(-126, 0.00034)
+  mM.13[1] ~ dnorm(-21, 1)
+  mM.13[2] ~ dnorm(-21, 1)
+  mM.13[3] ~ dnorm(-21, 1)
+  mM.14[1] ~ dnorm(60, 0.00028)
+  mM.14[2] ~ dnorm(60, 0.00028)
+  mM.14[3] ~ dnorm(60, 0.00028)
+  ## Priors
+  scale.13 <- 1 / tau.13
+  scale.14 <- 1 / tau.14
+  tau.13 ~ dgamma(.05, 0.005) 
+  tau.14 ~ dgamma(.05, 0.005)
+  b11[1] ~ dnorm(0, 0.25) 
+  b21[1] ~ dnorm(0, 0.25)    
+  b12[1] ~ dnorm(0, 0.25) 
+  b22[1] ~ dnorm(0, 0.25)    
+  b13[1] ~ dnorm(0, 0.25) 
+  b23[1] ~ dnorm(0, 0.25)    
+  for (i in 2:k) {
+    b11[i] ~ dnorm(0, lambda) 
+    b21[i] ~ dnorm(0, lambda)
+    b12[i] ~ dnorm(0, lambda) 
+    b22[i] ~ dnorm(0, lambda)  
+    b13[i] ~ dnorm(0, lambda) 
+    b23[i] ~ dnorm(0, lambda)    
+  }
+  lambda ~ dgamma(0.05, 0.005)
+}
