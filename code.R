@@ -1,7 +1,3 @@
-library(tidyverse, quietly = TRUE)
-library(rjags, quietly = TRUE)
-library(splines, quietly = TRUE)
-
 run_jags <- function(file, data, N, thin){
   # Convenience function for running JAGS
   #
@@ -76,8 +72,7 @@ plot_IQR <- function(output, data){
     xlab("Cal yrs BP") +
     facet_grid(. ~ core, scales = "free_x", space = "free_x") + 
     ylim(c(0, 1)) +
-    scale_x_continuous(breaks = seq(0, 9500, by = 250)) +
-    geom_point(data = data.frame(year = 9250, core = "9300-9600"), aes(y=-1)) +
+    scale_x_continuous(breaks = seq(0, 9500, by = 100)) +
     theme(strip.background = element_blank(), strip.text.x = element_blank(),
           axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
           legend.position=c(0.08, 0.85))
