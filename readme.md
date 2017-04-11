@@ -10,7 +10,7 @@ plot_IQR(mcmc_output, data)
 
 ![](readme_files/figure-markdown_github/unnamed-chunk-2-1.png)
 
-Fig: Posterior median and interquartile ranges for source proportions
+*Figure: Posterior median and interquartile ranges for source proportions*
 
 ``` r
 sessionInfo()
