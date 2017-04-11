@@ -21,5 +21,9 @@ mcmc_output <- run_jags(file = "model.jags", data = data, N = 1000000, thin = 10
 plot_IQR(mcmc_output, data)
 ```
 
-*Fig: Posterior median and interquartile ranges for source proportions *
+Fig: Posterior median and interquartile ranges for source proportions
+
+```{r}
+sessionInfo()
+```
 
