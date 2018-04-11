@@ -3,7 +3,9 @@ title: "Keskitalo et al Bayesian source apportionment"
 output: github_document
 ---
 
-This repository contains the code used for fitting a Bayesian model of smoothly varying source proportions in Keskitalo et al. See `code.R` for R-code and `model.jags` for JAGS model file. Sample run
+This repository contains the code used for fitting a Bayesian model of smoothly varying source proportions in ["Sources and characteristics of terrestrial carbon in Holocene-scale sediments of the East Siberian Sea", *Clim. Past*, 13, 1213-1226, 2017](https://doi.org/10.5194/cp-13-1213-2017)
+
+See `code.R` for R-code and `model.jags` for JAGS model file. Sample run
 
 ```{r, warnings = FALSE, message = FALSE, echo = FALSE}
 library(ggplot2, quietly = TRUE, warn.conflicts = FALSE)
